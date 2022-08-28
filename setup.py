@@ -1,17 +1,48 @@
 # setuptools | pyproject | external build tools (potry, flit)
 # Transformar um programa em instalável | pip install -e . | python setup.py build
 
+import os
+
 from setuptools import find_packages, setup
 
+
+def read(*paths):
+    """Read the contents of a text file safely.
+    >>> read("project_name", "VERSION"
+    '0.1.0'
+    >>> read("README.md")
+    ...
+    """
+    rootpath = os.path.dirname( # Nome do diretorio que está esse arquivo
+        __file__
+    )  
+    filepath = os.path.join(rootpath, *paths)
+    with open(filepath) as file_:
+        return file_.read().strip()
+
+def read_requirements(path):
+    """Return a list of requirements from a text file"""
+    return [
+        line.strip()
+        for line in read(path).split("\n")
+        if not line.startswith(("#", "git+", '"', "-"))
+    ]
+    
 setup(
     name="dundie",
     version="0.1.0",  # x.y.z.
     description="Reward Point System for Dunder Mifflin",
+    long_description=read("README.md"),
+    long_description_content_type="text/markdown",
     author="Ayslan Batista",
+    python_requires=">=3.8",
     packages=find_packages(),  # todas as pasta que contem __init__
-    entry_points={ # Criando uma chamada de execução via terminal pelo nome do programa 
-        "console_scripts": [
-            "dundie = dundie.__main__:main"
-        ]
-    }, 
+    entry_points={  # Criando uma chamada de execução via terminal pelo nome do programa CLI
+        "console_scripts": ["dundie = dundie.__main__:main"]
+    },
+    install_requires=read_requirements("requirements.txt"),  # Dependências necessárias para rodar o programa
+    extras_require={  # Dependências para test e dev | pip install -e '.[dev]'
+        "test": read_requirements("requirements.test.txt"),
+        "dev": read_requirements("requirements.dev.txt"),
+    },
 )
