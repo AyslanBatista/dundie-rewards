@@ -35,6 +35,7 @@ setup(
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     author="Ayslan Batista",
+    python_requires=">=3.8",
     packages=find_packages(),  # todas as pasta que contem __init__
     entry_points={  # Criando uma chamada de execução via terminal pelo nome do programa CLI
         "console_scripts": ["dundie = dundie.__main__:main"]
