@@ -1,6 +1,6 @@
 import argparse
 
-from dundie.core import load
+from dundie.core import load  # noqa
 
 
 def main():
