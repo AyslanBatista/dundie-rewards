@@ -26,7 +26,5 @@ def test_load_negative_call_load_command_with_wrong_params(wrong_command):
             .decode("utf-8")
             .split("\n")
         )
-        
-        
+
     assert "status 2" in str(error.getrepr())
-        

@@ -1,5 +1,7 @@
 # setuptools | pyproject | external build tools (potry, flit)
-# Transformar um programa em instalável | pip install -e . | python setup.py build
+# Transformar um programa em instalável
+# pip install -e .
+# python setup.py build
 
 import os
 
@@ -13,12 +15,13 @@ def read(*paths):
     >>> read("README.md")
     ...
     """
-    rootpath = os.path.dirname( # Nome do diretorio que está esse arquivo
+    rootpath = os.path.dirname(  # Nome do diretorio que está esse arquivo
         __file__
-    )  
+    )
     filepath = os.path.join(rootpath, *paths)
     with open(filepath) as file_:
         return file_.read().strip()
+
 
 def read_requirements(path):
     """Return a list of requirements from a text file"""
@@ -27,7 +30,8 @@ def read_requirements(path):
         for line in read(path).split("\n")
         if not line.startswith(("#", "git+", '"', "-"))
     ]
-    
+
+
 setup(
     name="dundie",
     version="0.1.0",  # x.y.z.
@@ -37,10 +41,12 @@ setup(
     author="Ayslan Batista",
     python_requires=">=3.8",
     packages=find_packages(),  # todas as pasta que contem __init__
-    entry_points={  # Criando uma chamada de execução via terminal pelo nome do programa CLI
+    entry_points={
         "console_scripts": ["dundie = dundie.__main__:main"]
-    },
-    install_requires=read_requirements("requirements.txt"),  # Dependências necessárias para rodar o programa
+    },  # Criando uma execução via terminal pelo nome do programa CLI
+    install_requires=read_requirements(
+        "requirements.txt"
+    ),  # Dependências necessárias para rodar o programa
     extras_require={  # Dependências para test e dev | pip install -e '.[dev]'
         "test": read_requirements("requirements.test.txt"),
         "dev": read_requirements("requirements.dev.txt"),
