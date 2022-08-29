@@ -5,7 +5,7 @@ pudb
 pytest-watch
 
 # Code quality
-flake8
+flake8==4.0.1
 pyproject-flake8
 black
 isort
