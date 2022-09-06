@@ -2,6 +2,7 @@
 # Transformar um programa em instalável
 # pip install -e .
 # python setup.py build
+# flake9-docstrings - Para seguir um padrão de documentação
 
 import os
 
