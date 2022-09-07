@@ -16,7 +16,9 @@ click.rich_click.APPEND_METAVARS_HELP = True
 
 
 @click.group()
-@click.version_option(pkg_resources.get_distribution("dundie").version)
+@click.version_option(
+    pkg_resources.get_distribution("ayslanbatista-dundie").version
+)
 def main():
     """Dunder Mifflin Rewards System
 
