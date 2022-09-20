@@ -1,20 +1,25 @@
-.PHONY: install virtualenv ipython lint fmt test watch clean docs docs-serve build publish-test
+.PHONY: install virtualenv ipython clean test pflake8 fmt lint watch docs docs-serve build
+
 
 install:
 	@echo "Installing for dev environment"
-	@.venv/bin/python -m pip install -e '.[dev]'
+	@.venv/bin/python -m pip install -e '.[test,dev]'
+
 
 virtualenv:
-	@.venv/bin/python - m pip -m venv .venv
+	@python -m venv .venv
+
 
 ipython:
 	@.venv/bin/ipython
 
+
 lint:
+	#@.venv/bin/mypy --ignore-missing-imports dundie
 	@.venv/bin/pflake8
 
 fmt:
-	@.venv/bin/isort dundie tests integration
+	@.venv/bin/isort --profile=black -m 3 dundie tests integration
 	@.venv/bin/black dundie tests integration
 
 test:
@@ -22,7 +27,7 @@ test:
 
 watch:
 	# @.venv/bin/ptw
-	@ ls **/*.py | entr pytest --forked
+	@ls **/*.py | entr pytest --forked
 
 clean:            ## Clean unused files.
 	@find ./ -name '*.pyc' -exec rm -f {} \;

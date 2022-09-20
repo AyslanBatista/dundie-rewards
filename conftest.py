@@ -3,8 +3,8 @@ from unittest.mock import patch
 import pytest
 
 MARKER = """\
-integration: Mark integration tests
 unit: Mark unit tests
+integration: Mark integration tests
 high: High Priority
 medium: Medium Priority
 low: Low Priority

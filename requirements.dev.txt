@@ -4,7 +4,7 @@ ipdb
 pudb
 pytest-watch
 
-# Code quality
+# Code Quality
 flake8==4.0.1
 pyproject-flake8
 black
@@ -15,6 +15,10 @@ mkdocs
 
 # build
 wheel
+
+# typing
+mypy
+types-setuptools
 
 # Install project as editable
 -e .

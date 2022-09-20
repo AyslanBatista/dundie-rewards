@@ -28,7 +28,7 @@ git clone https://github.com/seunome/...
 ### Prepare virtual env
 
 ```bash
-cd dundie-rewards
+de dundie-rewards
 make virtualenv
 make install
 ```
@@ -37,7 +37,7 @@ make install
 
 - This project follows PEP8
 
-## Run tests
+### Run tests
 
 ```bash
 make test
@@ -54,4 +54,3 @@ make watch
 ### Pull Request Rules
 
 - We require all tests to be passing
-

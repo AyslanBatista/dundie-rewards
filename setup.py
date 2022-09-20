@@ -11,14 +11,12 @@ from setuptools import find_packages, setup
 
 def read(*paths):
     """Read the contents of a text file safely.
-    >>> read("project_name", "VERSION"
+    >>> read("dundie", "VERSION")
     '0.1.0'
     >>> read("README.md")
     ...
     """
-    rootpath = os.path.dirname(  # Nome do diretorio que está esse arquivo
-        __file__
-    )
+    rootpath = os.path.dirname(__file__)
     filepath = os.path.join(rootpath, *paths)
     with open(filepath) as file_:
         return file_.read().strip()
@@ -34,17 +32,17 @@ def read_requirements(path):
 
 
 setup(
-    name="ayslanbatista-dundie",
+    name="dundie",
     # Major.Minor.Patch
     # X.Y.Z
-    version="0.1.2",
+    version="0.1.1",
     description="Reward Point System for Dunder Mifflin",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
-    author="Ayslan Batista",
+    author="Bruno Rocha",
     python_requires=">=3.8",
     packages=find_packages(
-        exclude=["intergration"]
+        exclude=["integration"]
     ),  # todas as pasta que contem __init__
     include_package_data=True,
     entry_points={

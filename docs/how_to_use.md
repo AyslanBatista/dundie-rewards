@@ -1,4 +1,3 @@
-
 # How to use
 
 
@@ -51,6 +50,7 @@ dundie show --dept=Sales
 
 > **NOTE** passing `--output=file.json` will save a json file with the results.
 
+
 ## Adding points
 
 An admin user can easily add points to any user or dept.
@@ -63,6 +63,7 @@ dundie add 100 --email=jim@dundlermifflin.com
 ┡━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
 │ Jim Halpert │ Sales │ Salesman │ jim@dundlermiffli… │ 3100    │ 2022-03-15T17:14:… │
 └─────────────┴───────┴──────────┴────────────────────┴─────────┴────────────────────┘
+
 ```
 
 Available selectors are `--email` and `--dept`

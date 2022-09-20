@@ -31,3 +31,4 @@ to any other and will be password protected.
 
 The `history` command allow user to see his own movements, admin users can
 pass `--email=` and see anyone else movements.
+
