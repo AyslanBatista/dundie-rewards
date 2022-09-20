@@ -22,7 +22,7 @@ e este mesmo arquivo poderá ser usado para versões futuras. `Nome, Depto, Carg
 ## Installation
 
 ```py
-pip install seunome-dundie
+pip install ayslanbatista-dundie
 ```
 
 ```py
