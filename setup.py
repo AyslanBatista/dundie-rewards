@@ -32,14 +32,14 @@ def read_requirements(path):
 
 
 setup(
-    name="dundie",
+    name="ayslanbatista-dundie",
     # Major.Minor.Patch
     # X.Y.Z
-    version="0.1.1",
+    version="0.1.2",
     description="Reward Point System for Dunder Mifflin",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
-    author="Bruno Rocha",
+    author="Ayslan Batista",
     python_requires=">=3.8",
     packages=find_packages(
         exclude=["integration"]
