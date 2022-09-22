@@ -1,11 +1,15 @@
 import json
+import warnings
 
 import pkg_resources
 import rich_click as click
 from rich.console import Console
 from rich.table import Table
+from sqlalchemy.exc import SAWarning
 
 from dundie import core
+
+warnings.filterwarnings("ignore", category=SAWarning)
 
 click.rich_click.USE_RICH_MARKUP = True
 click.rich_click.USE_MARKDOWN = True
@@ -42,7 +46,7 @@ def load(filepath):
     - Loads to database
     """
     table = Table(title="Dunder Mifflin Associates")
-    headers = ["name", "dept", "role", "created", "e-mail"]
+    headers = ["email", "name", "dept", "role", "currency", "created"]
     for header in headers:
         table.add_column(header, style="magenta")
 
@@ -73,6 +77,8 @@ def show(output, **query):
         table.add_column(key.title().replace("_", " "), style="magenta")
 
     for person in result:
+        person["value"] = f"{person['value']:.2f}"
+        person["balance"] = f"{person['balance']:.2f}"
         table.add_row(*[str(value) for value in person.values()])
 
     console = Console()
