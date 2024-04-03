@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 setup(
     name="dundie",
@@ -7,4 +7,3 @@ setup(
     author="Ayslan Batista",
     packages=find_packages(),
 )
-
