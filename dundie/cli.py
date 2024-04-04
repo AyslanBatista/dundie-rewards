@@ -1,6 +1,6 @@
 import argparse
 
-from dundie.core import load # noqa
+from dundie.core import load  # noqa
 
 
 # Função principal referente ao CLI

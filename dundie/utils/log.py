@@ -6,8 +6,8 @@ LOG_LEVEL = os.getenv("LOG_LEVEL", "WARNING").upper()
 log = logging.getLogger("dundie")  # Criando stancia de log
 # Objeto de formatação de como será exibido os logs
 fmt = logging.Formatter(
-    '%(asctime)s %(name)s %(levelname)s '
-    'l:%(lineno)d f:%(filename)s: %(message)s'
+    "%(asctime)s %(name)s %(levelname)s "
+    "l:%(lineno)d f:%(filename)s: %(message)s"
 )
 
 

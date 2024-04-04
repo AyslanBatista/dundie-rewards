@@ -29,7 +29,14 @@ jobs:
         run: pip install '.[test]' # instalando o programa em forma de test
 
       - name: Look for style erros
-        run: pflake8
+        run: pflake8 # Rodando o flake para verificar se tem erro de formatação
+
+      - name: Check for importing style
+        run: isort --profile=black --check --diff dundie tests integration
+
+      - name: Look for auto format erros
+        run: black --check --diff dundie tests integration # Verificar se está correto a formtação do black
+        
 
   tests: #Vai rodar os tests aqui dentro
     needs: lint # Antes de iniciar os test, é preciso ter ocorrido tudo certo com o lint

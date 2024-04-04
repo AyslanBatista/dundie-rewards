@@ -1,4 +1,4 @@
-.PHONY: install virtualenv ipython clean test testci lint
+.PHONY: install virtualenv ipython clean test testci lint fmt
 
 
 install:
@@ -16,6 +16,10 @@ ipython:
 
 lint:
 	@.venv/bin/pflake8
+
+fmt:
+	@.venv/bin/isort dundie/ tests/ integration/
+	@.venv/bin/black dundie/ tests/ integration/
 
 test:
 	@.venv/bin/pytest
