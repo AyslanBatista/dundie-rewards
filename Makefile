@@ -1,4 +1,4 @@
-.PHONY: install virtualenv ipython clean test
+.PHONY: install virtualenv ipython clean test testci
 
 
 install:
@@ -15,11 +15,16 @@ ipython:
 
 
 test:
-	@.venv/bin/pytest tests/ integration/
+	@.venv/bin/pytest
+
+
+testci:
+	@.venv/bin/pytest -v --junitxml=test-results.xml
 
 
 watch:
-	@.venv/bin/ptw -- tests/
+	# @.venv/bin/ptw
+	@ls **/*.py | entr pytest --forked
 
 
 clean:            ## Clean unused files.
