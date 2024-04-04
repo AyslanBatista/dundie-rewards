@@ -1,0 +1,32 @@
+name: CI
+
+on: # Quando será rodado?
+  push: # Quando acontecer um push
+    branches: # na branch "main"
+      - "main"
+  pull_request: # E Quando acontecer um pull_request para "main"
+    branches:
+      - "main"
+  workflow_dispatch: #Pode rodar manualmente mesmo que não tenha um pull request
+
+jobs:
+  tests: #Vai rodar os tests aqui dentro
+    strategy: #Estrategias para rodar os tests
+      fail-fast: false # em formato "true" se falhar um teste, ele falha todos direto
+      matrix: #configura versão
+        python-version: ['3.9', '3.10', '3.11'] # python que ele ira usar para test
+        os: [ubuntu-latest] # Sistema operacional que ira usar para o test
+
+    runs-on: ${{ matrix.os }} # Usado para unificar as configurações da matrix
+
+    steps: #o que ele ira fazer?
+      - uses: actions/checkout@v2 #Fazer um checout na branch local na versão 2
+      - uses: actions/setup-python@v2 #Utilizando o setup python na versão 2
+        with:
+          python-version: ${{ matrix.python-version }} # Vai utilizar os python na versão especificada
+
+      - name: Install Project
+        run: pip install '.[test]' # instalando o programa em forma de test
+
+      - name: Run Tests
+        run: pytest -vv tests integration # Rodando os test
