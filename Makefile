@@ -1,4 +1,4 @@
-.PHONY: install virtualenv ipython clean test
+.PHONY: install virtualenv ipython clean test testci
 
 
 install:
@@ -15,7 +15,11 @@ ipython:
 
 
 test:
-	@.venv/bin/pytest tests/ integration/
+	@.venv/bin/pytest
+
+
+testci:
+	@.venv/bin/pytest --junitxml=test-result.xml
 
 
 watch:

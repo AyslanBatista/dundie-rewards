@@ -29,4 +29,13 @@ jobs:
         run: pip install '.[test]' # instalando o programa em forma de test
 
       - name: Run Tests
-        run: pytest -vv tests integration # Rodando os test
+        run: make testci # Rodando os test e gerando um arquivo como relatorio
+
+      - name: publish junit results
+        uses: EnricoMi/publish-unit-test-result-action@v1 # publicar os test unitarios que viram no arquivo xml
+        if: always() # Sempre publicar, seja com erro ou com acerto no test
+        with:
+          files: test-result.xml # Arquivo que contem as metricas do test unitario
+          check_name: Test Result (Python ${{ matrix.python-version }})
+
+
