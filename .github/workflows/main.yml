@@ -14,7 +14,7 @@ jobs:
     strategy: #Estrategias para rodar os tests
       fail-fast: false # em formato "true" se falhar um teste, ele falha todos direto
       matrix: #configura versão
-        python-version: [3.9, 3.10, 3.11] # python que ele ira usar para test
+        python-version: ['3.9', '3.10', '3.11'] # python que ele ira usar para test
         os: [ubuntu-latest] # Sistema operacional que ira usar para o test
 
     runs-on: ${{ matrix.os }} # Usado para unificar as configurações da matrix
