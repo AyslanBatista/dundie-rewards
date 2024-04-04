@@ -15,11 +15,11 @@ ipython:
 
 
 test:
-	@.venv/bin/pytest --forked
+	@.venv/bin/pytest
 
 
 testci:
-	@.venv/bin/pytest -v --forked --junitxml=test-results.xml
+	@.venv/bin/pytest -v --junitxml=test-result.xml
 
 
 watch:
