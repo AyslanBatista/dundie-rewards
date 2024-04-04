@@ -15,15 +15,16 @@ ipython:
 
 
 test:
-	@.venv/bin/pytest
+	@.venv/bin/pytest --forked
 
 
 testci:
-	@.venv/bin/pytest --junitxml=test-result.xml
+	@.venv/bin/pytest -v --forked --junitxml=test-results.xml
 
 
 watch:
-	@.venv/bin/ptw -- tests/
+	# @.venv/bin/ptw
+	@ls **/*.py | entr pytest --forked
 
 
 clean:            ## Clean unused files.
