@@ -1,4 +1,5 @@
 import os
+
 from setuptools import find_packages, setup
 
 
@@ -41,7 +42,7 @@ setup(
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     author="Ayslan Batista",
-    python_requires=">=3.8", # Meu programa só roda em versão maior que 3.8
+    python_requires=">=3.8",  # Meu programa só roda em versão maior que 3.8
     # packages=["dundie"] Durante o build os pacotes serão apenas
     # os programas que estão escritos dentro da pasta "dundie"
     # pode ser usado o find_packages()
