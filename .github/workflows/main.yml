@@ -58,7 +58,7 @@ jobs:
         run: pip install '.[test]' # instalando o programa em forma de test
 
       - name: Run tests
-        run: pytest -v --junitxml=test-results.xml # Rodando os test e gerando um arquivo como relatorio
+        run: pytest -v --forked --junitxml=test-results.xml # Rodando os test e gerando um arquivo como relatorio
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2 # publicar os test unitarios que viram no arquivo xml
