@@ -1,0 +1,118 @@
+{
+    "people": {
+        "jim@dundlermifflin.com": {
+            "name": "Jim Halpert",
+            "dept": "Sales",
+            "role": "Salesman"
+        },
+        "schrute@dundlermifflin.com": {
+            "name": "Dwight Schrute",
+            "dept": "Sales",
+            "role": "Manager"
+        },
+        "glewis@dundlermifflin.com": {
+            "name": "Gabe Lewis",
+            "dept": "C-Level",
+            "role": "CEO"
+        }
+    },
+    "balance": {
+        "jim@dundlermifflin.com": 805,
+        "schrute@dundlermifflin.com": 405,
+        "glewis@dundlermifflin.com": 100
+    },
+    "movement": {
+        "jim@dundlermifflin.com": [
+            {
+                "date": "2024-04-05T18:56:48.635772",
+                "actor": "system",
+                "value": 500
+            },
+            {
+                "date": "2024-04-05T20:29:45.475971",
+                "actor": null,
+                "value": 30
+            },
+            {
+                "date": "2024-04-05T20:29:50.808749",
+                "actor": null,
+                "value": 332
+            },
+            {
+                "date": "2024-04-05T20:34:45.105904",
+                "actor": null,
+                "value": -62
+            },
+            {
+                "date": "2024-04-05T20:36:05.150843",
+                "actor": null,
+                "value": 62
+            },
+            {
+                "date": "2024-04-05T20:36:15.291092",
+                "actor": null,
+                "value": -62
+            },
+            {
+                "date": "2024-04-05T20:38:11.089225",
+                "actor": null,
+                "value": 5
+            }
+        ],
+        "schrute@dundlermifflin.com": [
+            {
+                "date": "2024-04-05T18:56:48.655752",
+                "actor": "system",
+                "value": 100
+            },
+            {
+                "date": "2024-04-05T20:29:45.475978",
+                "actor": null,
+                "value": 30
+            },
+            {
+                "date": "2024-04-05T20:29:50.808757",
+                "actor": null,
+                "value": 332
+            },
+            {
+                "date": "2024-04-05T20:34:45.105912",
+                "actor": null,
+                "value": -62
+            },
+            {
+                "date": "2024-04-05T20:36:05.150849",
+                "actor": null,
+                "value": 62
+            },
+            {
+                "date": "2024-04-05T20:36:15.291099",
+                "actor": null,
+                "value": -62
+            },
+            {
+                "date": "2024-04-05T20:38:11.089232",
+                "actor": null,
+                "value": 5
+            }
+        ],
+        "glewis@dundlermifflin.com": [
+            {
+                "date": "2024-04-05T18:56:48.673727",
+                "actor": "system",
+                "value": 100
+            }
+        ]
+    },
+    "users": {
+        "jim@dundlermifflin.com": {
+            "password": "D0biHMTc"
+        },
+        "schrute@dundlermifflin.com": {
+            "password": "8MUsoVYb"
+        },
+        "glewis@dundlermifflin.com": {
+            "password": "sv8Rfgup"
+        }
+    }
+}

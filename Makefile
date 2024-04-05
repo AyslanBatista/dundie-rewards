@@ -22,7 +22,7 @@ fmt:
 	@.venv/bin/black dundie/ tests/ integration/
 
 test:
-	@.venv/bin/pytest
+	@.venv/bin/pytest --forked
 
 
 testci:
