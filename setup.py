@@ -32,11 +32,11 @@ def read_requirements(path):
 setup(
     # Nome do Programa | pip install dundie
     name="dundie",
-    # x.y.z
+    # x.y.z | Major.Minor.Patch
     # X=Algo muito significativo
     # y=Novas funcionalidades
     # z=Resolver bug ou pequenas mudanças
-    version="0.1.0",
+    version="0.1.1",
     description="Reward Point System for Dunder Mifflin",
     # Será adicionar o README na decrição do programa no PYPI
     long_description=read("README.md"),
@@ -47,7 +47,8 @@ setup(
     # os programas que estão escritos dentro da pasta "dundie"
     # pode ser usado o find_packages()
     # Ele ira procurar todas as pastas que contem __init__.py
-    packages=find_packages(),
+    packages=find_packages(exclude=["integration"]),
+    include_package_data=True,  # vai verificar o arquivo MANIFEST.in no build
     # Lista de quais são os nomes dos entrypoints e os pacotes entrypoints
     entry_points={
         # Forma de usar diretamente o programa ex: dundie --version

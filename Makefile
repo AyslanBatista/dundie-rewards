@@ -1,4 +1,4 @@
-.PHONY: install virtualenv ipython clean test testci lint fmt
+.PHONY: install virtualenv ipython clean test testci fmt lint watch docs docs-serve build publish-test publish
 
 
 install:
@@ -34,6 +34,7 @@ watch:
 	@ls **/*.py | entr pytest --forked
 
 
+
 clean:            ## Clean unused files.
 	@find ./ -name '*.pyc' -exec rm -f {} \;
 	@find ./ -name '__pycache__' -exec rm -rf {} \;
@@ -48,3 +49,20 @@ clean:            ## Clean unused files.
 	@rm -rf htmlcov
 	@rm -rf .tox/
 	@rm -rf docs/_build
+
+
+docs:
+	@mkdocs build --clean
+
+
+docs-serve:
+	@mkdocs serve
+
+build:
+	@python setup.py sdist bdist_wheel
+
+publish-test:
+	@twine upload --repository testpypi dist/*
+
+publish:
+	@twine upload dist/*
