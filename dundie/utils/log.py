@@ -1,6 +1,7 @@
 import logging
 import os
 from logging import handlers
+from typing import Union
 
 LOG_LEVEL = os.getenv("LOG_LEVEL", "WARNING").upper()
 log = logging.getLogger("dundie")  # Criando stancia de log
@@ -14,7 +15,9 @@ fmt = logging.Formatter(
 # Controle de logs do usuario pela variavel de ambiente
 # export LOG_LEVEL=debug
 # export serve para ativar o log level em formato DEV, para exibir os debug
-def get_logger(logfile="dundie.log"):
+def get_logger(
+    logfile: Union[str, os.PathLike[str]] = "dundie.log"
+) -> logging.Logger:
     """Returns a configured logger."""
 
     # Responsavel por salvar os log em arquivo
