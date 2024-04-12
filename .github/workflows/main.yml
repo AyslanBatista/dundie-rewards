@@ -7,6 +7,7 @@ on: # Quando será rodado?
   pull_request: # E Quando acontecer um pull_request para "main"
     branches:
       - "main"
+
   workflow_dispatch: #Pode rodar manualmente mesmo que não tenha um pull request
 
 jobs:
@@ -28,11 +29,14 @@ jobs:
       - name: Install Project
         run: pip install '.[test]' # instalando o programa em forma de test
 
+      # - name: Typing
+      #   run: mypy --ignore-missing-imports dundie
+
       - name: Look for style erros
         run: pflake8 # Rodando o flake para verificar se tem erro de formatação
 
       - name: Check for importing style
-        run: isort --profile=black --check --diff dundie tests integration
+        run: isort --profile=black -m 3 --check --diff dundie tests integration
 
       - name: Look for auto format erros
         run: black --check --diff dundie tests integration # Verificar se está correto a formtação do black
@@ -65,3 +69,4 @@ jobs:
         if: always() # Sempre publicar, seja com erro ou com acerto no test
         with:
           files: test-results.xml
+          check_name: Test Result (Python ${{matrix.python-version}})

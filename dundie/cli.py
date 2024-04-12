@@ -23,7 +23,11 @@ click.rich_click.APPEND_METAVARS_HELP = True
 def main():
     """Dunder Mifflin Rewards System.
 
-    This cli application controls DM rewards.
+    This cli application controls Dunder Mifflin rewards.
+
+    - admins can load information tot he people database and assign points.
+    - users can view reports and transfer points.
+
     """
 
 
@@ -62,7 +66,6 @@ def load(filepath):  # injeção de dependencia
 def show(output, **query):
     """Show information about users"""
     result = core.read(**query)
-
     if output:
         with open(output, "w") as output_file:
             output_file.write(json.dumps(result))
@@ -74,7 +77,7 @@ def show(output, **query):
         title="Dunder Mifflin Report", style="cyan", title_style="bold"
     )
     for key in result[0]:
-        table.add_column(key.title(), style="green")
+        table.add_column(key.title().replace("_", " "), style="green")
 
     for person in result:
         table.add_row(*[str(value) for value in person.values()])
