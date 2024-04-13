@@ -12,7 +12,7 @@ cmd = CliRunner()
 @pytest.mark.medium
 def test_load_positive_call_load_command():
     """test command load"""
-    out = cmd.invoke(load, PEOPLE_FILE)  # Ele vai invocar a função para test
+    out = cmd.invoke(load, PEOPLE_FILE)
     assert "Dunder Mifflin Associates" in out.output
 
 
