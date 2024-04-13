@@ -25,8 +25,6 @@ fmt:
 test:
 	@.venv/bin/pytest --forked
 
-testci:
-	@.venv/bin/pytest -v --junitxml=test-results.xml
 
 
 watch:
