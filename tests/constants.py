@@ -1,4 +1,10 @@
 import os
 
-TEST_PATH = os.path.dirname(__file__)
-PEOPLE_FILE = os.path.join(TEST_PATH, "assets/people.csv")
+TEST_PATH: str = os.path.dirname(__file__)
+PEOPLE_FILE: str = os.path.join(TEST_PATH, "assets/people.csv")
+USER_TEST: dict = {
+    "role": "CEO",
+    "dept": "C-Level",
+    "name": "Test",
+    "email": "test@dundlermifflin.com",
+}

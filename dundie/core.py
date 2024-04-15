@@ -12,12 +12,14 @@ from dundie.settings import DATEFMT
 from dundie.utils.db import add_movement, add_person
 from dundie.utils.exchange import get_rates
 from dundie.utils.log import get_logger
+from dundie.utils.login import check_login
 
 log = get_logger()
 Query = Dict[str, Any]
 ResultDict = List[Dict[str, Any]]
 
 
+@check_login
 def load(filepath: str) -> ResultDict:
     """Loads data from filepath to the database.
 
@@ -46,6 +48,7 @@ def load(filepath: str) -> ResultDict:
     return people
 
 
+@check_login
 def read(**query: Query) -> ResultDict:
     """Read data from db and filters using query
 
@@ -87,11 +90,11 @@ def read(**query: Query) -> ResultDict:
     return return_data
 
 
+@check_login
 def add(value: int, **query: Query):
     """Add value to each record on query"""
     query = {k: v for k, v in query.items() if v is not None}
     people = read(**query)
-
     if not people:
         raise RuntimeError("Not Found")
 

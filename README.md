@@ -29,6 +29,29 @@ pip install seunome-dundie
 pip install -e `.[dev]`
 ```
 
+## Login
+- Exporting variables
+
+```bash
+export DUNDIE_USER=email
+export DUNDIE_PASSWORD=password
+```
+
+- Entering your user and password when running a command
+
+```bash
+dundie show
+```
+```bash
+❌ [ERROR] You need to be logged in to access this function.
+
+Please enter the email and then the password
+User: user
+Password: password
+
+✅ [AUTHORIZED] You are logged into the account 'user'
+```
+
 ## Usage
 
 ```py

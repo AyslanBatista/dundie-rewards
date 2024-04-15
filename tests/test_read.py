@@ -1,4 +1,7 @@
+import os
+
 import pytest
+from conftest import create_test_user
 
 from dundie.core import load, read
 from dundie.database import get_session
@@ -8,8 +11,20 @@ from dundie.utils.db import add_person
 from .constants import PEOPLE_FILE
 
 
+@pytest.fixture(scope="function", autouse=True)
+def export_variables_for_test(request):
+    """Exporta as variáveis de ambiente para os testes"""
+    user, password = create_test_user()
+    os.environ["DUNDIE_USER"] = user
+    os.environ["DUNDIE_PASSWORD"] = password
+    yield
+    del os.environ["DUNDIE_USER"]
+    del os.environ["DUNDIE_PASSWORD"]
+
+
 @pytest.mark.unit
 def test_read_with_query():
+    user_test = 1
     session = get_session()
 
     data = {
@@ -33,7 +48,7 @@ def test_read_with_query():
     session.commit()
 
     response = read()
-    assert len(response) == 2
+    assert len(response) == 2 + user_test
 
     response = read(dept="Management")
     assert len(response) == 1
@@ -47,8 +62,9 @@ def test_read_with_query():
 @pytest.mark.unit
 def test_read_all_data():
     load(PEOPLE_FILE)
+    user_test = 1
     result = read()
-    assert len(result) == 3
+    assert len(result) == 3 + user_test
 
 
 @pytest.mark.unit
