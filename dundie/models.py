@@ -9,6 +9,10 @@ from dundie.utils.user import generate_simple_password
 
 
 class InvalidEmailError(Exception):
+    """
+    Exceção personalizada para erros de autenticação.
+    """
+
     pass
 
 

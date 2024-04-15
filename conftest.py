@@ -1,8 +1,15 @@
 import warnings
+
+from dundie.utils.db import add_person
+from dundie.database import get_session
 import pytest
+from tests.constants import USER_TEST
+
 from unittest.mock import patch
-from sqlmodel import create_engine
+from sqlmodel import create_engine, select
 from dundie import models
+
+
 from sqlalchemy.exc import SAWarning
 
 
@@ -43,3 +50,15 @@ def setup_testing_database(request):
     models.SQLModel.metadata.create_all(bind=engine)
     with patch("dundie.database.engine", engine):
         yield
+
+
+def create_test_user():
+    """Creating a test user in the database"""
+    with get_session() as session:
+        user = USER_TEST["email"]
+        add_person(session, models.Person(**USER_TEST))
+        session.commit()
+        filtro = session.exec(
+            select(models.User).where(models.Person.email == user)
+        ).first()
+    return user, filtro.password
