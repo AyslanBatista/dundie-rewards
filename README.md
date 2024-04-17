@@ -36,6 +36,7 @@ pip install -e `.[dev]`
 export DUNDIE_USER=email
 export DUNDIE_PASSWORD=password
 ```
+#### OR
 
 - Entering your user and password when running a command
 

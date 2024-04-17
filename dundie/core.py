@@ -75,15 +75,18 @@ def read(**query: Query) -> ResultDict:
         results = session.exec(sql)
         for person in results:
             total = rates[person.currency].value * person.balance[0].value
+            # breakpoint()
             return_data.append(
-                # TODO: Melhorar a exibição da tabela issue #21
                 {
+                    "name": person.name,
                     "email": person.email,
+                    "dept": person.dept,
+                    "role": person.role,
                     "balance": person.balance[0].value,
                     "last_movement": person.movement[-1].date.strftime(
                         DATEFMT
                     ),
-                    **person.dict(exclude={"id"}),
+                    "currency": person.currency,
                     **{"value": total},
                 }
             )

@@ -46,7 +46,7 @@ def load(filepath):  # injeção de dependencia
     table = Table(
         title="Dunder Mifflin Associates", style="cyan", title_style="bold"
     )
-    headers = ["email", "name", "dept", "role", "currency", "created"]
+    headers = ["name", "email", "dept", "role", "currency", "created"]
     for header in headers:
         table.add_column(header, style="green")
 
