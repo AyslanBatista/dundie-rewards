@@ -96,7 +96,6 @@ def show(output, **query):
 def add(ctx, value, **query):
     """Add points to the user or dept"""
     core.add(value, **query)
-
     ctx.invoke(show, **query)
 
 
@@ -106,7 +105,20 @@ def add(ctx, value, **query):
 @click.option("--email", required=False)
 @click.pass_context  # Exibir o "show" depois de rodar a função
 def remove(ctx, value, **query):
-    """Add points to the user or dept"""
+    """Remove points to the user or dept"""
 
     core.add(-value, **query)
     ctx.invoke(show, **query)
+
+
+@main.command()
+@click.argument("value", type=click.INT, required=True)
+@click.option("--to", required=True)
+def transfer(value, to):
+    receiver_name = core.transfer(value=value, to=to)
+    console = Console()
+
+    console.print(
+        f"\n💸 Success.. [bold green]{value}[/] points transferred from your"
+        f" account to account by {receiver_name!r}."
+    )
