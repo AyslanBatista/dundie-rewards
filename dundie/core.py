@@ -1,6 +1,7 @@
 """Core module of dundie"""
 
 import os
+import sys
 from csv import reader
 from typing import Any, Dict, List
 
@@ -75,7 +76,6 @@ def read(**query: Query) -> ResultDict:
         results = session.exec(sql)
         for person in results:
             total = rates[person.currency].value * person.balance[0].value
-            # breakpoint()
             return_data.append(
                 {
                     "name": person.name,
@@ -99,7 +99,9 @@ def add(value: int, **query: Query):
     query = {k: v for k, v in query.items() if v is not None}
     people = read(**query)
     if not people:
-        raise RuntimeError("Not Found")
+        raise RuntimeError(
+            f"{list(query.values())} provided was not found in the database"
+        )
 
     with get_session() as session:
         user = os.getenv("USER")
@@ -110,3 +112,21 @@ def add(value: int, **query: Query):
 
             add_movement(session, instance, value, user)
         session.commit()
+
+
+@check_login
+def transfer(value: int, to: str) -> str:
+    """Transfer values between users"""
+    user = {"email": os.getenv("DUNDIE_USER")}
+    people = read(**user)
+
+    if value > people[0]["balance"]:
+        print("\n❌ [ERROR] Insufficient balance to complete the transfer.\n")
+        sys.exit(1)
+
+    add_to = {"email": to}
+    add(-value, **user)
+    add(value, **add_to)
+
+    receiver_name = read(**add_to)
+    return receiver_name[0]["name"]
