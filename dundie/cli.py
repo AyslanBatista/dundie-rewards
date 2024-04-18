@@ -6,6 +6,7 @@ from rich.console import Console
 from rich.table import Table
 
 from dundie import core
+from dundie.utils.permission import check_permission_ceo
 
 # Conjunto de configurações do Rich
 click.rich_click.USE_RICH_MARKUP = True
@@ -32,8 +33,11 @@ def main():
 
 
 # Qualquer nome de função se tonar um subcomando para o cli
+
+
 @main.command()
 @click.argument("filepath", type=click.Path(exists=True))  # checkar argumento
+@check_permission_ceo
 def load(filepath):  # injeção de dependencia
     """Loads the file to the database
 
@@ -65,7 +69,7 @@ def load(filepath):  # injeção de dependencia
 @click.option("--output", default=None)
 def show(output, **query):
     """Show information about users"""
-    result = core.read(**query)
+    result = core.read(show=True, **query)
     if output:
         with open(output, "w") as output_file:
             output_file.write(json.dumps(result))
@@ -93,6 +97,7 @@ def show(output, **query):
 @click.option("--dept", required=False)
 @click.option("--email", required=False)
 @click.pass_context  # Exibir o "show" depois de rodar a função
+@check_permission_ceo
 def add(ctx, value, **query):
     """Add points to the user or dept"""
     core.add(value, **query)
@@ -104,6 +109,7 @@ def add(ctx, value, **query):
 @click.option("--dept", required=False)
 @click.option("--email", required=False)
 @click.pass_context  # Exibir o "show" depois de rodar a função
+@check_permission_ceo
 def remove(ctx, value, **query):
     """Remove points to the user or dept"""
 
@@ -122,3 +128,20 @@ def transfer(value, to):
         f"\n💸 Success.. [bold green]{value}[/] points transferred from your"
         f" account to account by {receiver_name!r}."
     )
+
+
+@main.command()
+def movements():
+    table = Table(
+        title="Dunder Mifflin Movements", style="cyan", title_style="bold"
+    )
+    movements = core.movements()
+
+    for key in movements[0]:
+        table.add_column(key.title().replace("_", " "), style="green")
+
+    for movement in movements:
+        table.add_row(*[str(value) for value in movement.values()])
+
+    console = Console()
+    console.print(table)
