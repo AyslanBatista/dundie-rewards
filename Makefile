@@ -24,7 +24,9 @@ fmt:
 	@.venv/bin/black dundie tests integration
 
 test:
-	@.venv/bin/pytest --forked
+	@.venv/bin/pytest --cov=dundie --forked
+	@.venv/bin/coverage xml
+	@.venv/bin/coverage html
 
 
 
