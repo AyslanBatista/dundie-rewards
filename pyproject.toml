@@ -1,11 +1,44 @@
+[project]
+# Nome do Programa | pip install dundie
+name = "dundie"
+description = "Reward Point System for Dunder Mifflin"
+authors = [{ name = "Ayslan Batista", email = "ayslan.batista@hotmail.com" }]
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dynamic = ["version", "readme", "dependencies", "optional-dependencies"]
+
+[project.urls]
+Homepage = 'https://dundermifflin.com'
+Source = 'https://github.com/AyslanBatista/dundie-rewards'
+
+# Lista de quais são os nomes dos entrypoints e os pacotes entrypoints
+[project.scripts]
+# Forma de usar diretamente o programa ex: dundie --version
+dundie = "dundie.__main__:main"
+
+[build-system]
+# Setuptools acima da versão 45 
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+build-backend = 'setuptools.build_meta'
+
+[tool.setuptools]
+packages = ["dundie"]
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"]}
+dependencies = {file = "requirements.txt"}
+
+[tool.setuptools.dynamic.optional-dependencies]
+dev = {file = "requirements.dev.txt"}
+test = {file = "requirements.test.txt"}
+
+[tool.setuptools_scm]
+write_to = "dundie/VERSION.txt"
+
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = "-ra -q -vv"
-testpaths = [
-    "tests",
-    "integration",
-]
-
+testpaths = ["tests", "integration"]
 
 [tool.flake8]
 exclude = [".venv", "build", ".vscodelocal", "migrations"]
@@ -30,7 +63,7 @@ exclude = '''
 [tool.isort]
 profile = "black"
 src_paths = ["dundie", "tests", "integration"]
-multi_line_output = 3  # VHI
+multi_line_output = 3                          # VHI
 line_length = 79
 force_grid_wrap = 0
 use_parentheses = true

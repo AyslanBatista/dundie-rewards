@@ -62,7 +62,7 @@ jobs:
         run: pip install '.[test]' # instalando o programa em forma de test
 
       - name: Run tests
-        run: pytest -v --cov=dundie --forked --junitxml=test-results.xml && coverage xml # Rodando os test e gerando um arquivo como relatorio
+        run: pytest -v --cov=dundie --cov-report=xml --forked --junitxml=test-results.xml # Rodando os test e gerando um arquivo como relatorio
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4.0.1
