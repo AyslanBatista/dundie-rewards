@@ -1,5 +1,4 @@
 [project]
-# Nome do Programa | pip install dundie
 name = "dundie"
 description = "Reward Point System for Dunder Mifflin"
 authors = [{ name = "Ayslan Batista", email = "ayslan.batista@hotmail.com" }]
@@ -17,7 +16,8 @@ Source = 'https://github.com/AyslanBatista/dundie-rewards'
 dundie = "dundie.__main__:main"
 
 [build-system]
-# Setuptools acima da versão 45 
+# Setuptools acima da versão 45
+# setuptools_scm utilizar o git tag v1.0.1
 requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
 build-backend = 'setuptools.build_meta'
 

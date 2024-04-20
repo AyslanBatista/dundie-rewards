@@ -13,7 +13,7 @@ from dundie.settings import DATEFMT
 from dundie.utils.db import add_movement, add_person
 from dundie.utils.exchange import get_rates
 from dundie.utils.log import get_logger
-from dundie.utils.login import check_login
+from dundie.utils.login import check_login, console
 from dundie.utils.permission import get_user_role_dept, query_permission
 
 log = get_logger()
@@ -102,34 +102,42 @@ def add(value: int, **query: Query):
     """Add value to each record on query"""
     query = {k: v for k, v in query.items() if v is not None}
     people = read(**query)
-    if not people:
-        raise RuntimeError(
-            f"{list(query.values())} provided was not found in the database"
-        )
+    try:
+        if not people:
+            raise RuntimeError(
+                f"{list(query.values())}provided was not found in the database"
+            )
+    except RuntimeError as e:
+        console.print(e, style="danger")
 
     with get_session() as session:
-        user = os.getenv("DUNDIE_USER")
+        email = os.getenv("DUNDIE_EMAIL")
         for person in people:
             instance = session.exec(
                 select(Person).where(Person.email == person["email"])
             ).first()
 
-            add_movement(session, instance, value, user)
+            add_movement(session, instance, value, email)
         session.commit()
 
 
 @check_login
 def transfer(value: int, to: str) -> str:
     """Transfer values between users"""
-    user = {"email": os.getenv("DUNDIE_USER")}
+    user = {"email": os.getenv("DUNDIE_EMAIL")}
     people = read(**user)
 
     if value > people[0]["balance"]:
-        print("\n❌ [ERROR] Insufficient balance to complete the transfer.\n")
+        console.print(
+            "\n❌ [ERROR] Insufficient balance to complete the transfer.\n",
+            style="danger",
+        )
         sys.exit(1)
 
     if user["email"] == to:
-        print("\n❌ [ERROR] You cannot transfer to yourself.\n")
+        console.print(
+            "\n❌ [ERROR] You cannot transfer to yourself.\n", style="danger"
+        )
         sys.exit(1)
 
     add_to = {"email": to}

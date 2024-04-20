@@ -1,7 +1,9 @@
 import os
+import sys
 from functools import wraps
 from typing import Any, Dict
 
+import rich_click as click
 from sqlmodel import select
 
 from dundie.database import get_session
@@ -15,19 +17,16 @@ class PermissionDenied(Exception):
     Exceção personalizada para erros de autenticação.
     """
 
-    def __init__(self, message):
-        self.message = message
-
 
 def get_user_role_dept():
     """Obtaining the role,department and email
     information of the user connected to the system"""
     user_role_dept = {"role": None, "dept": None, "email": None}
-    user = os.getenv("DUNDIE_USER")
-    user_role_dept["email"] = user
+    email = os.getenv("DUNDIE_EMAIL")
+    user_role_dept["email"] = email
     with get_session() as session:
         instance = session.exec(
-            select(Person).where(Person.email == user)
+            select(Person).where(Person.email == email)
         ).first()
         user_role_dept["role"] = instance.role
         user_role_dept["dept"] = instance.dept
@@ -63,11 +62,15 @@ def check_permission_ceo(func):
     def wrapper(*args, **kwargs):
         # Função para obter a função do usuário atual
         user_role_dept = get_user_role_dept()
-        if user_role_dept["role"] == "CEO":
-            return func(*args, **kwargs)
-        else:
-            raise PermissionDenied(
-                "❌ [ERROR] You do not have permission to run this command"
-            )
+        try:
+            if user_role_dept["role"] == "CEO":
+                return func(*args, **kwargs)
+            else:
+                raise PermissionDenied(
+                    "❌ [ERROR] You do not have permission to run this command"
+                )
+        except PermissionDenied as e:
+            click.echo(click.style(e, bold=True, fg="red"))
+            sys.exit(1)
 
     return wrapper

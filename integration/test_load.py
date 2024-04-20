@@ -14,11 +14,11 @@ cmd = CliRunner()
 @pytest.fixture(scope="function", autouse=True)
 def export_variables_for_test(request):
     """Exporta as variáveis de ambiente para os testes"""
-    user, password = create_test_user()
-    os.environ["DUNDIE_USER"] = user
+    email, password = create_test_user()
+    os.environ["DUNDIE_EMAIL"] = email
     os.environ["DUNDIE_PASSWORD"] = password
     yield
-    del os.environ["DUNDIE_USER"]
+    del os.environ["DUNDIE_EMAIL"]
     del os.environ["DUNDIE_PASSWORD"]
 
 
