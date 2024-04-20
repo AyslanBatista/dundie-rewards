@@ -48,15 +48,15 @@ dundie show
 
 Please enter the email and then the password.
 
-👤 Email: ayslan@dundlermifflin.com
-🔒 Password:
+👤 Email: email
+🔒 Password: password
 
-✅ [AUTHORIZED] You are logged into the account 'ayslan@dundlermifflin.com'.
+✅ [AUTHORIZED] You are logged into the account 'email'.
 ```
 ![](./assets/login_input.gif)
 
 ## Comandos Administrador
-- Comando `dundie show` logado como administrador, tem acesso a ver todos os usuários.
+- Comando `dundie show` logado como administrador tem acesso a ver todos os usuários.
 ```bash
 dundie load assets/people.csv
 ```
