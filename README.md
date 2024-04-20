@@ -31,32 +31,54 @@ pip install -e `.[dev]`
 
 ## Login
 - Exporting variables
-
 ```bash
 export DUNDIE_USER=email
 export DUNDIE_PASSWORD=password
 ```
+
+![](./assets/login_export.gif)
+
 #### OR
 
 - Entering your user and password when running a command
+```bash
+dundie show
 
+ ⚠  [WARNING] You need to be logged in to access this function.
+
+Please enter the email and then the password.
+
+👤 Email: ayslan@dundlermifflin.com
+🔒 Password:
+
+✅ [AUTHORIZED] You are logged into the account 'ayslan@dundlermifflin.com'.
+```
+![](./assets/login_input.gif)
+
+## Comandos Administrador
+- Comando `dundie show` logado como administrador, tem acesso a ver todos os usuários.
+```bash
+dundie load assets/people.csv
+```
+```bash
+dundie add 65 --dept=Sales
+dundie add 100 --email=jim@dundlermifflin.com
+```
+```bash
+dundie remove 65 --dept=Sales
+dundie remove 100 --email=jim@dundlermifflin.com
+```
+
+![](./assets/Administrador.gif)
+
+## Comandos Funcionário
 ```bash
 dundie show
 ```
 ```bash
-❌ [ERROR] You need to be logged in to access this function.
-
-Please enter the email and then the password
-User: user
-Password: password
-
-✅ [AUTHORIZED] You are logged into the account 'user'
+dundie transfer 100 --email=jim@dundlermifflin.com
 ```
-
-## Usage
-
-```py
-dundie --help
+```bash
+dundie movements
 ```
-
-![](./assets/dundie.gif)
+![](./assets/funcionario.gif)
