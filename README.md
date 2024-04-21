@@ -36,24 +36,24 @@ export DUNDIE_USER=email
 export DUNDIE_PASSWORD=password
 ```
 
-![](./assets/login_export.gif)
 
-#### OR
+#### OU
 
 - Entering your user and password when running a command
 ```bash
 dundie show
+```
+```bash
 
  ⚠  [WARNING] You need to be logged in to access this function.
 
 Please enter the email and then the password.
 
-👤 Email: ayslan@dundlermifflin.com
-🔒 Password:
+👤 Email: email
+🔒 Password: password
 
-✅ [AUTHORIZED] You are logged into the account 'ayslan@dundlermifflin.com'.
+✅ [AUTHORIZED] You are logged into the account 'email'.
 ```
-![](./assets/login_input.gif)
 
 ## Como usar
 ```bash
