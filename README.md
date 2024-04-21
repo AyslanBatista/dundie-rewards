@@ -30,7 +30,7 @@ pip install -e `.[dev]`
 ```
 
 ## Login
-- Exportando variáveis
+- Exporting variables
 ```bash
 export DUNDIE_USER=email
 export DUNDIE_PASSWORD=password
@@ -39,7 +39,7 @@ export DUNDIE_PASSWORD=password
 
 #### OU
 
-- Inserindo seu usuário e senha ao executar um comando
+- Entering your user and password when running a command
 ```bash
 dundie show
 ```
@@ -55,30 +55,8 @@ Please enter the email and then the password.
 ✅ [AUTHORIZED] You are logged into the account 'email'.
 ```
 
-## Comandos Administrador
-- Comando `dundie show` logado como administrador tem acesso a ver todos os usuários.
+## Como usar
 ```bash
-dundie load assets/people.csv
+dundie --help
 ```
-```bash
-dundie add 65 --dept=Sales
-dundie add 100 --email=jim@dundlermifflin.com
-```
-```bash
-dundie remove 65 --dept=Sales
-dundie remove 100 --email=jim@dundlermifflin.com
-```
-
-![](./assets/Administrador.gif)
-
-## Comandos Funcionário
-```bash
-dundie show
-```
-```bash
-dundie transfer 100 --email=jim@dundlermifflin.com
-```
-```bash
-dundie movements
-```
-![](./assets/funcionario.gif)
+![](./assets/dundie.gif)
