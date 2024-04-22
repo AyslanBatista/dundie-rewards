@@ -1,4 +1,5 @@
 import warnings
+import os
 
 from dundie.utils.db import add_person
 from dundie.database import get_session
@@ -62,3 +63,17 @@ def create_test_user():
             select(models.User).where(models.Person.email == user)
         ).first()
     return user, filtro.password
+
+
+def create_test_database(func):
+    def wrapper(*args, **kwargs):
+        email, password = create_test_user()
+        os.environ["DUNDIE_EMAIL"] = email
+        os.environ["DUNDIE_PASSWORD"] = password
+        try:
+            return func(*args, **kwargs)
+        finally:
+            del os.environ["DUNDIE_EMAIL"]
+            del os.environ["DUNDIE_PASSWORD"]
+
+    return wrapper

@@ -1,8 +1,6 @@
-import os
-
 import pytest
 from click.testing import CliRunner
-from conftest import create_test_user
+from conftest import create_test_database
 
 from dundie.cli import load, main
 
@@ -11,19 +9,9 @@ from .constants import PEOPLE_FILE
 cmd = CliRunner()
 
 
-@pytest.fixture(scope="function", autouse=True)
-def export_variables_for_test(request):
-    """Exporta as variáveis de ambiente para os testes"""
-    email, password = create_test_user()
-    os.environ["DUNDIE_EMAIL"] = email
-    os.environ["DUNDIE_PASSWORD"] = password
-    yield
-    del os.environ["DUNDIE_EMAIL"]
-    del os.environ["DUNDIE_PASSWORD"]
-
-
 @pytest.mark.integration
 @pytest.mark.medium
+@create_test_database
 def test_load_positive_call_load_command():
     """test command load"""
     out = cmd.invoke(load, PEOPLE_FILE)

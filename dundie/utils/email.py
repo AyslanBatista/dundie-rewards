@@ -4,9 +4,7 @@ from email.mime.text import MIMEText
 from typing import List
 
 from dundie.settings import SMTP_HOST, SMTP_PORT, SMTP_TIMEOUT
-from dundie.utils.log import get_logger
-
-log = get_logger()
+from dundie.utils.log import log
 
 # row string, ele não irá usar a tabela utf-8, e ira manter os \b
 regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"

@@ -3,20 +3,15 @@ import sys
 from functools import wraps
 
 import rich_click as click
-from rich.console import Console
-from rich.theme import Theme
 from sqlmodel import select
 
 from dundie.database import get_session
 from dundie.models import Person, User
+from dundie.settings import console
+from dundie.utils.log import log
 
 NUMBER_ATTEMPTS: int = 3
 FIRST_CHECK = False
-
-custom_theme = Theme(
-    {"info": "bold cyan", "warning": "magenta", "danger": "bold red"}
-)
-console = Console(theme=custom_theme)
 
 
 class AuthenticationLimitError(Exception):
@@ -68,17 +63,20 @@ def login_attempts(attempts: int) -> int:
         int: returns -1 which will be removed from remaining attempts
     """
     if attempts == NUMBER_ATTEMPTS:
-        console.print(
+        message_login_required = (
             "\n ⚠  [WARNING] You need to be logged in "
-            "to access this function.\n",
-            style="warning",
+            "to access this function.\n"
         )
+        console.print(message_login_required, style="warning")
+        log.warning(message_login_required.strip())
+
     else:
-        console.print(
+        message_attempt_error = (
             f"\n❌ [ERROR] email or password is incorrect,"
-            f" {attempts} attempts left.\n",
-            style="danger",
+            f" {attempts} attempts left.\n"
         )
+        console.print(message_attempt_error, style="danger")
+        log.error(message_attempt_error.strip())
     request_login()
     return -1
 
@@ -91,14 +89,17 @@ def check_login(func):
         try:
             while attempts > 0:
                 if access_allowed():
-                    # Se for primeira chamada da função ele retorna a aprovação
+                    # Se for primeira chamada da função
+                    # ele retorna a aprovação do login
                     if not FIRST_CHECK:
                         email = os.getenv("DUNDIE_EMAIL")
-                        console.print(
+                        message_sucesss_login = (
                             f"\n✅ [bold][AUTHORIZED][/] You are logged into"
-                            f" the account [blue]{email!r}[/].\n",
-                            style="green",
+                            f" the account [blue]{email!r}[/].\n"
                         )
+
+                        console.print(message_sucesss_login, style="green")
+                        log.info(message_sucesss_login.strip())
                         FIRST_CHECK = True
 
                     # Se o usuário estiver logado a função original é executada
@@ -109,10 +110,11 @@ def check_login(func):
                     continue
             raise AuthenticationLimitError(
                 "\n❌ [ERROR] You have reached the authentication limit,"
-                " please try again later...",
+                " please try again later..."
             )
         except AuthenticationLimitError as e:
+            log.error(str(e).strip())
             click.echo(click.style(e, bold=True, fg="white", bg="red"))
-            sys.exit(1)
+            sys.exit(5)
 
     return wrapper
