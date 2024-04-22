@@ -1,6 +1,21 @@
-# Projeto Dundie Rewards
+<p align="center">
+  <a href="https://github.com/AyslanBatista/dundie-rewards"><img src="https://m.media-amazon.com/images/I/51bb-MYLnNL._SX342_SY445_.jpg" alt="DundieRewards"></a>
+</p>
+<p align="center">
+<a href="https://github.com/AyslanBatista/dundie-rewards/actions/workflows/main.yml" target="_blank">
+    <img src="https://github.com/AyslanBatista/dundie-rewards/actions/workflows/main.yml/badge.svg" alt="Test">
+</a>
+<a href="https://codecov.io/gh/AyslanBatista/dundie-rewards" target="_blank">
+    <img src="https://codecov.io/gh/AyslanBatista/dundie-rewards/branch/main/graph/badge.svg?token=5XYHAT14V0" alt="Coverage">
+</a>
+<a href="https://github.com/AyslanBatista/dundie-rewards?tab=Unlicense-1-ov-file#readme" target="_blank">
+    <img src="https://img.shields.io/badge/license-MIT-007EC7.svg?color=%2334D058" alt="License">
+</a>
+</p>
 
-[![CI](https://github.com/AyslanBatista/dundie-rewards/actions/workflows/main.yml/badge.svg)](https://github.com/AyslanBatista/dundie-rewards/actions/workflows/main.yml) [![codecov](https://codecov.io/gh/AyslanBatista/dundie-rewards/branch/main/graph/badge.svg?token=5XYHAT14V0)](https://codecov.io/gh/AyslanBatista/dundie-rewards)
+---
+
+# Projeto Dundie Rewards
 
 Nós fomos contratados pela Dunder Mifflin, grande fabricante de papéis para desenvolver um sistema
 de recompensas para seus colaboradores.
