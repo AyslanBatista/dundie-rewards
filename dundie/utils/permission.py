@@ -8,6 +8,7 @@ from sqlmodel import select
 
 from dundie.database import get_session
 from dundie.models import Person
+from dundie.utils.log import log
 
 Query = Dict[str, Any]
 
@@ -70,7 +71,8 @@ def check_permission_ceo(func):
                     "❌ [ERROR] You do not have permission to run this command"
                 )
         except PermissionDenied as e:
+            log.error(str(e).strip())
             click.echo(click.style(e, bold=True, fg="red"))
-            sys.exit(1)
+            sys.exit(6)
 
     return wrapper

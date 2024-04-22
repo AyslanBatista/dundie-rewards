@@ -5,6 +5,7 @@ import httpx
 from pydantic import BaseModel, Field
 
 from dundie.settings import API_BASE_URL
+from dundie.utils.log import log
 
 
 class USDRate(BaseModel):
@@ -25,7 +26,9 @@ def get_rates(currencies: List[str]) -> Dict[str, USDRate]:
             if response.status_code == 200:
                 data = response.json()[f"USD{currency}"]
                 return_data[currency] = USDRate(**data)
+                log.info(response.text)
             else:
                 return_data[currency] = USDRate(name="api/error", high=0)
+                log.error(response.text)
 
     return return_data

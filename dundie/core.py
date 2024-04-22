@@ -1,5 +1,6 @@
 """Core module of dundie"""
 
+import json
 import os
 import sys
 from csv import reader
@@ -12,16 +13,33 @@ from dundie.models import Movement, Person
 from dundie.settings import DATEFMT
 from dundie.utils.db import add_movement, add_person
 from dundie.utils.exchange import get_rates
-from dundie.utils.log import get_logger
+from dundie.utils.json_serealizer import DecimalEncoder
+from dundie.utils.log import log
 from dundie.utils.login import check_login, console
-from dundie.utils.permission import get_user_role_dept, query_permission
+from dundie.utils.permission import (
+    check_permission_ceo,
+    get_user_role_dept,
+    query_permission,
+)
 
-log = get_logger()
 Query = Dict[str, Any]
 ResultDict = List[Dict[str, Any]]
 
 
+class InvalidBeneficiaryError(Exception):
+    """
+    Exceção personalizada para erros de autenticação.
+    """
+
+
+class InsufficientBalanceError(Exception):
+    """
+    Exceção personalizada para erros de autenticação.
+    """
+
+
 @check_login
+@check_permission_ceo
 def load(filepath: str) -> ResultDict:
     """Loads data from filepath to the database.
 
@@ -32,7 +50,8 @@ def load(filepath: str) -> ResultDict:
         csv_data = reader(open(filepath))
     except FileNotFoundError as e:
         log.error(str(e))
-        raise e
+        console.print(e, style="danger")
+        sys.exit(1)
 
     people = []
     headers = ["name", "dept", "role", "email", "currency"]
@@ -94,21 +113,24 @@ def read(show=False, **query: Query) -> ResultDict:
                     **{"value": total},
                 }
             )
-    return return_data
-
-
-@check_login
-def add(value: int, **query: Query):
-    """Add value to each record on query"""
-    query = {k: v for k, v in query.items() if v is not None}
-    people = read(**query)
     try:
-        if not people:
+        if not return_data:
             raise RuntimeError(
                 f"{list(query.values())}provided was not found in the database"
             )
     except RuntimeError as e:
+        log.error(e)
         console.print(e, style="danger")
+        sys.exit(2)
+    return return_data
+
+
+@check_login
+@check_permission_ceo
+def add(value: int, **query: Query):
+    """Add value to each record on query"""
+    query = {k: v for k, v in query.items() if v is not None}
+    people = read(**query)
 
     with get_session() as session:
         email = os.getenv("DUNDIE_EMAIL")
@@ -122,34 +144,51 @@ def add(value: int, **query: Query):
 
 
 @check_login
-def transfer(value: int, to: str) -> str:
+def transfer(value: int, **to: Query) -> tuple[int, list]:
     """Transfer values between users"""
+    query = {k: v for k, v in to.items() if v is not None}
+    data_people = read(**query)
+
     user = {"email": os.getenv("DUNDIE_EMAIL")}
-    people = read(**user)
+    data_user = read(**user)
+    removed_value = value * len(data_people)
+    try:
+        if user["email"] == data_people[0]["email"]:
+            raise InvalidBeneficiaryError(
+                "\n❌ [ERROR] You cannot transfer to yourself.\n"
+            )
 
-    if value > people[0]["balance"]:
-        console.print(
-            "\n❌ [ERROR] Insufficient balance to complete the transfer.\n",
-            style="danger",
-        )
-        sys.exit(1)
+        if removed_value > data_user[0]["balance"]:
+            raise InsufficientBalanceError(
+                "\n❌ [ERROR] Insufficient balance to complete the transfer.\n"
+            )
 
-    if user["email"] == to:
-        console.print(
-            "\n❌ [ERROR] You cannot transfer to yourself.\n", style="danger"
-        )
-        sys.exit(1)
+    except (InsufficientBalanceError, InvalidBeneficiaryError) as e:
+        log.error(str(e).strip())
+        console.print(e, style="danger")
+        sys.exit(3)
 
-    add_to = {"email": to}
-    add(-value, **user)
-    add(value, **add_to)
+    with get_session() as session:
+        email = os.getenv("DUNDIE_EMAIL")
+        instance_user = session.exec(
+            select(Person).where(Person.email == data_user[0]["email"])
+        ).first()
+        add_movement(session, instance_user, -removed_value, email)
 
-    receiver_name = read(**add_to)
-    return receiver_name[0]["name"]
+        for person in data_people:
+            instance = session.exec(
+                select(Person).where(Person.email == person["email"])
+            ).first()
+
+            add_movement(session, instance, value, email)
+        session.commit()
+
+    return removed_value, data_people
 
 
 @check_login
 def movements():
+    """returns the movement data of the user that was informed"""
     return_data = []
     user = get_user_role_dept()
     with get_session() as session:
@@ -172,3 +211,19 @@ def movements():
                 }
             )
     return return_data
+
+
+def generating_json_file(data: str, path: str):
+    """Generating a json file with the data and path provided"""
+    try:
+        with open(path, "w") as path_file:
+            path_file.write(json.dumps(data, cls=DecimalEncoder))
+        console.print(
+            f"📄 [bold green]Success![/] File with the desired"
+            f" information was saved in {path!r}.\n",
+            style="info",
+        )
+    except PermissionError as e:
+        log.error(str(e))
+        console.print(e, style="danger")
+        sys.exit(4)

@@ -1,5 +1,8 @@
 import os
 
+from rich.console import Console
+from rich.theme import Theme
+
 SMTP_HOST: str = "localhost"
 SMTP_PORT: int = 8025
 SMTP_TIMEOUT: int = 5
@@ -13,3 +16,9 @@ API_BASE_URL: str = (
 ROOT_PATH: str = os.path.dirname(__file__)
 DATABASE_PATH: str = os.path.join(ROOT_PATH, "..", "assets", "database.db")
 SQL_CON_STRING = f"sqlite:///{DATABASE_PATH}"
+
+
+CUSTOM_THEME = Theme(
+    {"info": "bold cyan", "warning": "magenta", "danger": "bold red"}
+)
+console = Console(theme=CUSTOM_THEME)

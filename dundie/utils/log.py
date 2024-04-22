@@ -4,7 +4,7 @@ from logging import handlers
 from typing import Union
 
 LOG_LEVEL = os.getenv("LOG_LEVEL", "WARNING").upper()
-log = logging.getLogger("dundie")  # Criando stancia de log
+log_instance = logging.getLogger("dundie")  # Criando stancia de log
 # Objeto de formatação de como será exibido os logs
 fmt = logging.Formatter(
     "%(asctime)s %(name)s %(levelname)s "
@@ -33,5 +33,9 @@ def get_logger(
     fh.setLevel(LOG_LEVEL)  # Nivel que será exibido
 
     fh.setFormatter(fmt)  # Adicionando a formtação ao Handler que foi criado
-    log.addHandler(fh)  # Por fim adiciona o Handler ao log
-    return log
+    log_instance.addHandler(fh)  # Por fim adiciona o Handler ao log
+    log_instance.setLevel(LOG_LEVEL)  # export LOG_LEVEL=debug
+    return log_instance
+
+
+log = get_logger()

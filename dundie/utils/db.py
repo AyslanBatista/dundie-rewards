@@ -7,7 +7,7 @@ from dundie.settings import EMAIL_FROM
 from dundie.utils.email import send_email
 
 
-def add_person(session: Session, instance: Person):
+def add_person(session: Session, instance: Person) -> tuple[Person, bool]:
     """Saves person data to database.
 
     - If exists, update, else create
