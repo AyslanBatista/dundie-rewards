@@ -37,7 +37,7 @@ e este mesmo arquivo poderá ser usado para versões futuras. `Nome, Depto, Carg
 ## Instalação
 
 ```py
-pip install seunome-dundie
+pip install ayslanbatista-dundie
 ```
 
 ```py
