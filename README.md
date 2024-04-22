@@ -19,7 +19,7 @@ Os dados dos funcionários atuais serão fornecidos em um arquivo que pode ser n
 e este mesmo arquivo poderá ser usado para versões futuras. `Nome, Depto, Cargo, Email`
 
 
-## Installation
+## Instalação
 
 ```py
 pip install seunome-dundie
@@ -29,8 +29,8 @@ pip install seunome-dundie
 pip install -e `.[dev]`
 ```
 
-## Login
-- Exporting variables
+## Como Logar
+- Exportando variáveis
 ```bash
 export DUNDIE_USER=email
 export DUNDIE_PASSWORD=password
@@ -39,7 +39,7 @@ export DUNDIE_PASSWORD=password
 
 #### OU
 
-- Entering your user and password when running a command
+- Inserindo seu e-mail e senha ao executar um comando
 ```bash
 dundie show
 ```
