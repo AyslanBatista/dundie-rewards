@@ -1,9 +1,11 @@
 import pytest
+from conftest import create_test_database
 from sqlmodel import select
 
 from dundie.database import get_session
 from dundie.models import InvalidEmailError, Person
 from dundie.utils.db import add_movement, add_person
+from tests.constants import USER_TEST
 
 
 @pytest.mark.unit
@@ -83,3 +85,16 @@ def test_add_or_remove_points_for_person():
     assert after == before - 100
     assert after == 400
     assert before == 500
+
+
+@pytest.mark.unit
+@create_test_database
+def test_add_person_existing():
+    data = USER_TEST
+    session = get_session()
+    person, created = add_person(session, Person(**data))
+    assert created is False
+    session.commit()
+
+    assert USER_TEST["email"] == person.email
+    assert USER_TEST["name"] == person.name

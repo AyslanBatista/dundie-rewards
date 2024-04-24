@@ -1,7 +1,6 @@
 import pytest
 
-from dundie.utils.email import check_valid_email
-from dundie.utils.user import generate_simple_password
+from dundie.utils.email import check_valid_email, send_email
 
 
 @pytest.mark.unit
@@ -21,12 +20,13 @@ def test_negative_check_valid_email(address):
 
 
 @pytest.mark.unit
-def test_generate_simple_password():
-    """Test generation of random simple passwords
-    TODO: Generate hashed complex passwords, encrypit it
-    """
-    passwords = []
-    for _ in range(100):
-        passwords.append(generate_simple_password(8))
+def test_send_email(mocker):
+    mock_SMTP = mocker.MagicMock(name="dundie.utils.email.smtplib.SMTP")
+    mocker.patch("dundie.utils.email.smtplib.SMTP", new=mock_SMTP)
 
-    assert len(set(passwords)) == 100
+    from_email = "from@example.com"
+    to_emails = ["to1@example.com", "to2@example.com"]
+    subject = "Test Subject"
+    text = "Test Email Body"
+
+    send_email(from_email, to_emails, subject, text)

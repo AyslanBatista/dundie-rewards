@@ -15,9 +15,7 @@ FIRST_CHECK = False
 
 
 class AuthenticationLimitError(Exception):
-    """
-    Exceção personalizada para erros de autenticação.
-    """
+    pass
 
 
 def access_allowed() -> bool:
@@ -26,6 +24,10 @@ def access_allowed() -> bool:
     """
     email = os.getenv("DUNDIE_EMAIL")
     senha = os.getenv("DUNDIE_PASSWORD")
+
+    if (email and senha) is None:
+        return None
+
     with get_session() as session:
         filter_user = session.exec(
             select(Person)
@@ -105,9 +107,20 @@ def check_login(func):
                     # Se o usuário estiver logado a função original é executada
                     return func(*args, **kwargs)
 
-                else:
+                if access_allowed() is None:
                     attempts += login_attempts(attempts)
                     continue
+
+                if not access_allowed():
+                    message_attempt_error = (
+                        "\n❌ [ERROR] email or password exported in"
+                        "environment variables are incorrect\n"
+                    )
+                    console.print(message_attempt_error, style="danger")
+                    log.error(message_attempt_error.strip())
+                    attempts += login_attempts(attempts)
+                    continue
+
             raise AuthenticationLimitError(
                 "\n❌ [ERROR] You have reached the authentication limit,"
                 " please try again later..."

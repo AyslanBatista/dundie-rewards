@@ -10,7 +10,7 @@ from sqlmodel import select
 
 from dundie.database import get_session
 from dundie.models import Movement, Person
-from dundie.settings import DATEFMT
+from dundie.settings import API_BASE_URL, DATEFMT
 from dundie.utils.db import add_movement, add_person
 from dundie.utils.exchange import get_rates
 from dundie.utils.json_serealizer import DecimalEncoder
@@ -27,15 +27,11 @@ ResultDict = List[Dict[str, Any]]
 
 
 class InvalidBeneficiaryError(Exception):
-    """
-    Exceção personalizada para erros de autenticação.
-    """
+    pass
 
 
 class InsufficientBalanceError(Exception):
-    """
-    Exceção personalizada para erros de autenticação.
-    """
+    pass
 
 
 @check_login
@@ -94,7 +90,7 @@ def read(show=False, **query: Query) -> ResultDict:
             select(Person.currency).distinct(Person.currency)
         )
 
-        rates = get_rates(currencies)
+        rates = get_rates(currencies=currencies, url=API_BASE_URL)
 
         results = session.exec(sql)
         for person in results:
@@ -163,10 +159,15 @@ def transfer(value: int, **to: Query) -> tuple[int, list]:
                 "\n❌ [ERROR] Insufficient balance to complete the transfer.\n"
             )
 
-    except (InsufficientBalanceError, InvalidBeneficiaryError) as e:
+    except InsufficientBalanceError as e:
         log.error(str(e).strip())
         console.print(e, style="danger")
         sys.exit(3)
+
+    except InvalidBeneficiaryError as e:
+        log.error(str(e).strip())
+        console.print(e, style="danger")
+        sys.exit(7)
 
     with get_session() as session:
         email = os.getenv("DUNDIE_EMAIL")
