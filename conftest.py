@@ -60,9 +60,11 @@ def create_test_user():
         add_person(session, models.Person(**USER_TEST))
         session.commit()
         filtro = session.exec(
-            select(models.User).where(models.Person.email == user)
+            select(models.Person, models.User)
+            .join(models.User)
+            .where(models.Person.email == user)
         ).first()
-    return user, filtro.password
+    return user, filtro[1].password
 
 
 def create_test_database(func):

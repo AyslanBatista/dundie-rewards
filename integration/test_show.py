@@ -1,10 +1,11 @@
+import os
 from datetime import datetime
 
 import pytest
 from click.testing import CliRunner
 from conftest import create_test_database
 
-from dundie.cli import load, show
+from dundie.cli import load, main, show
 
 from .constants import PEOPLE_FILE
 
@@ -118,13 +119,71 @@ def test_show_positive_call_show_command_with_email_params():
         assert no_expected_string not in out.output
 
 
-# @pytest.mark.integration
-# @pytest.mark.medium
-# @create_test_database
-# def test_show_positive_call_show_command_with_output_params():
-#     """test command load"""
-#     cmd.invoke(load, PEOPLE_FILE)
-#     out = cmd.invoke(
-#         show,
-#         "--dept=Sales",
-#     )
+@pytest.mark.integration
+@pytest.mark.medium
+@create_test_database
+def test_show_negative_call_show_command_with_email_params():
+    """test command load"""
+    cmd.invoke(load, PEOPLE_FILE)
+    out = cmd.invoke(show, "--email=te@dundlermifflin.com")
+    assert "not found in the database" in out.stdout
+    assert 2 == out.exit_code
+
+
+@pytest.mark.integration
+@pytest.mark.medium
+@create_test_database
+def test_show_positive_call_show_command_with_output_params():
+    """test command load"""
+    cmd.invoke(load, PEOPLE_FILE)
+    current_directory = os.getcwd()
+    path = os.path.join(current_directory, "foo.txt")
+    with cmd.isolated_filesystem():
+        out = cmd.invoke(main, ["show", f"--output={path}"])
+        assert out.exit_code == 0
+        assert "File" in out.output
+        assert "Dunder Mifflin Report" in out.output
+
+
+@pytest.mark.integration
+@pytest.mark.medium
+@create_test_database
+def test_show_negative_call_show_command_with_output_params():
+    """test command load"""
+    cmd.invoke(load, PEOPLE_FILE)
+    path = os.path.join("/root/", "foo.txt")
+    out = cmd.invoke(main, ["show", f"--output={path}"])
+
+    assert "Permission denied" in out.stdout
+    assert 4 == out.exit_code
+
+
+@pytest.mark.integration
+@pytest.mark.medium
+@create_test_database
+def test_show_positive_call_show_command_with_output_params_with_filter():
+    """test command load"""
+    cmd.invoke(load, PEOPLE_FILE)
+    current_directory = os.getcwd()
+    path = os.path.join(current_directory, "foo.txt")
+    with cmd.isolated_filesystem():
+        out = cmd.invoke(main, ["show", "--dept=Sales", f"--output={path}"])
+        assert out.exit_code == 0
+        assert "File" in out.output
+        assert "Dunder Mifflin Report" in out.output
+        assert "Sales" in out.output
+        assert "Directory" not in out.output
+        assert "glewis" not in out.output
+
+
+@pytest.mark.integration
+@pytest.mark.medium
+@create_test_database
+def test_show_negative_call_show_command_with_output_params_with_filter():
+    """test command load"""
+    cmd.invoke(load, PEOPLE_FILE)
+    current_directory = os.getcwd()
+    path = os.path.join(current_directory, "foo.txt")
+    out = cmd.invoke(main, ["show", "--dept=ales", f"--output={path}"])
+    assert "not found in the database" in out.stdout
+    assert 2 == out.exit_code

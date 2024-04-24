@@ -9,10 +9,6 @@ from dundie.utils.user import generate_simple_password
 
 
 class InvalidEmailError(Exception):
-    """
-    Exceção personalizada para erros de autenticação.
-    """
-
     pass
 
 
@@ -34,8 +30,8 @@ class Person(SQLModel, table=True):
             raise InvalidEmailError(f"Invalid email for {v!r}")
         return v
 
-    def __str__(self) -> str:
-        return f"{self.name} - {self.role}"
+    # def __str__(self) -> str:
+    #     return f"{self.name} - {self.role}"
 
 
 class Balance(SQLModel, table=True):

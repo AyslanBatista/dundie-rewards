@@ -1,9 +1,12 @@
+import os
+
 import pytest
 from conftest import create_test_database
+from sqlmodel import select
 
 from dundie.core import load, read
 from dundie.database import get_session
-from dundie.models import Person
+from dundie.models import Person, User
 from dundie.utils.db import add_person
 
 from .constants import PEOPLE_FILE
@@ -70,3 +73,31 @@ def test_read_only_one_person():
     load(PEOPLE_FILE)
     result = read(email="jim@dundlermifflin.com")
     assert len(result) == 1
+
+
+@pytest.mark.unit
+@create_test_database
+def test_read_query_permission_manager():
+    load(PEOPLE_FILE)
+    email = "schrute@dundlermifflin.com"
+    with get_session() as session:
+        filtro = session.exec(
+            select(Person, User).join(User).where(Person.email == email)
+        ).first()
+    os.environ["DUNDIE_EMAIL"] = email
+    os.environ["DUNDIE_PASSWORD"] = filtro[1].password
+
+    result = read(show=True)
+
+    assert len(result) == 2
+    assert result[0]["dept"] == "Sales"
+
+
+@pytest.mark.unit
+@create_test_database
+def test_read_negative_with_query():
+    with pytest.raises(SystemExit) as e:
+        read(email="m@dlin.com")
+
+    assert e.type == SystemExit
+    assert e.value.code == 2

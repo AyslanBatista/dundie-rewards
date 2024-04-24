@@ -14,9 +14,7 @@ Query = Dict[str, Any]
 
 
 class PermissionDenied(Exception):
-    """
-    Exceção personalizada para erros de autenticação.
-    """
+    pass
 
 
 def get_user_role_dept():
